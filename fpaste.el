@@ -44,8 +44,6 @@
   (interactive)
   (fpaste--selection (region-beginning) (region-end)))
 
-;; FIXME open browser with the paste
-
 (defun fpaste--selection (beg end)
   "Upload the region defined by BEG and END into fpaste."
   (if (executable-find fpaste-program)
@@ -53,9 +51,10 @@
              (output (with-current-buffer "*Shell Command Output*"
                          (buffer-substring (point-min) (point-max)))))
         (progn
-          (string-match "http://.*fedoraproject.*$" output)
-          (let ((url (match-string 0 output)))
-            (message url))))
+          (string-match "\\(http://[^ ]*fedoraproject.*\\)$" output)
+          (let ((url (match-string 1 output)))
+            (message url)
+            (browse-url url))))
     (message "'%s' is not available. Please install it." fpaste-program)))
 
 (provide 'fpaste)
