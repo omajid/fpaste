@@ -5,7 +5,7 @@
 ;; Author: Omair Majid <omair.majid@gmail.com>
 ;; URL: http://github.com/omajid/fpaste
 ;; Keywords: convenience tools
-;; Version: 0.0.1.20140916
+;; Version: 0.0.1.20140924
 ;; Package-Requires:
 
 ;; This file is NOT part of GNU Emacs.
@@ -31,20 +31,24 @@
 
 ;;; Code:
 
-(defconst fpaste-program "fpaste"
-  "The program to use to upload pastes.")
+(defgroup fpaste nil
+  "Group for fpaste-related customization.")
+
+(defcustom fpaste-program "fpaste"
+  "The program to use to upload pastes to the Fedora pastebin."
+  :group 'fpaste)
 
 (defun fpaste-current-buffer ()
   "Upload the contents of this buffer into fpaste."
   (interactive)
-  (fpaste--selection (point-min) (point-max)))
+  (fpaste--region (point-min) (point-max)))
 
-(defun fpaste-current-selection ()
+(defun fpaste-current-region ()
   "Upload the current selection into fpaste."
   (interactive)
-  (fpaste--selection (region-beginning) (region-end)))
+  (fpaste--region (region-beginning) (region-end)))
 
-(defun fpaste--selection (beg end)
+(defun fpaste--region (beg end)
   "Upload the region defined by BEG and END into fpaste."
   (if (executable-find fpaste-program)
       (let* ((result (shell-command-on-region beg end fpaste-program))
