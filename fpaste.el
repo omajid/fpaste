@@ -26,8 +26,13 @@
 
 ;;; Commentary:
 
-;;   Use the command line `fpaste` program to upload pastes to the
-;;   Fedora pastebin.
+;; Use the command line `fpaste` program to upload pastes to the
+;; Fedora pastebin.
+;;
+;; It's probably easiset to use the `fpaste-current-region-or-buffer'
+;; function which will upload the right thing (the current selection,
+;; if any, or the buffer) to fpaste.
+
 
 ;;; Code:
 
@@ -47,6 +52,13 @@
   "Upload the current selection into fpaste."
   (interactive)
   (fpaste--region (region-beginning) (region-end)))
+
+(defun fpaste-current-region-or-buffer ()
+  "Upload the contents of the current buffer or region to fpaste."
+  (interactive)
+  (if (use-region-p)
+      (fpaste-current-region)
+    (fpaste-current-buffer)))
 
 (defun fpaste--region (beg end)
   "Upload the region defined by BEG and END into fpaste."
