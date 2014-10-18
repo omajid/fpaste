@@ -29,9 +29,9 @@
 ;; Use the command line `fpaste` program to upload pastes to the
 ;; Fedora pastebin.
 ;;
-;; It's probably easiset to use the `fpaste-current-region-or-buffer'
-;; function which will upload the right thing (the current selection,
-;; if any, or the buffer) to fpaste.
+;; Use the `fpaste-current-region-or-buffer' function which will
+;; upload the right thing (the current selection, if any, or the
+;; buffer) to fpaste.
 
 
 ;;; Code:
@@ -43,22 +43,19 @@
   "The program to use to upload pastes to the Fedora pastebin."
   :group 'fpaste)
 
-(defun fpaste-current-buffer ()
-  "Upload the contents of this buffer into fpaste."
-  (interactive)
-  (fpaste--region (point-min) (point-max)))
+(defcustom fpaste-output-url-regex "\\(http://[^ ]*fedoraproject.*\\)$"
+  "A regexp that matches the URL of the paste.
 
-(defun fpaste-current-region ()
-  "Upload the current selection into fpaste."
-  (interactive)
-  (fpaste--region (region-beginning) (region-end)))
+The first match should be the URL."
+  :group 'fpaste)
 
+;;;###autoload
 (defun fpaste-current-region-or-buffer ()
   "Upload the contents of the current buffer or region to fpaste."
   (interactive)
   (if (use-region-p)
-      (fpaste-current-region)
-    (fpaste-current-buffer)))
+      (fpaste--region (region-beginning) (region-end))
+    (fpaste--region (point-min) (point-max))))
 
 (defun fpaste--region (beg end)
   "Upload the region defined by BEG and END into fpaste."
@@ -67,7 +64,7 @@
              (output (with-current-buffer "*Shell Command Output*"
                          (buffer-substring (point-min) (point-max)))))
         (progn
-          (string-match "\\(http://[^ ]*fedoraproject.*\\)$" output)
+          (string-match fpaste-output-url-regex output)
           (let ((url (match-string 1 output)))
             (message url)
             (browse-url url))))
