@@ -37,7 +37,8 @@
 ;;; Code:
 
 (defgroup fpaste nil
-  "Group for fpaste-related customization.")
+  "Group for fpaste-related customization."
+  :group 'comm)
 
 (defcustom fpaste-program "fpaste"
   "The program to use to upload pastes to the Fedora pastebin."
