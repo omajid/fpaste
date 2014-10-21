@@ -50,6 +50,10 @@
 The first match should be the URL."
   :group 'fpaste)
 
+(defcustom fpaste-user ""
+  "The username to use for the paste."
+  :group 'fpaste)
+
 ;;;###autoload
 (defun fpaste-current-region-or-buffer ()
   "Upload the contents of the current buffer or region to fpaste."
@@ -61,7 +65,12 @@ The first match should be the URL."
 (defun fpaste--region (beg end)
   "Upload the region defined by BEG and END into fpaste."
   (if (executable-find fpaste-program)
-      (let* ((result (shell-command-on-region beg end fpaste-program))
+      (let* ((result (shell-command-on-region beg end
+                                              (concat
+                                               fpaste-program
+                                               " -n '"
+                                               fpaste-user
+                                               "'")))
              (output (with-current-buffer "*Shell Command Output*"
                          (buffer-substring (point-min) (point-max)))))
         (progn
