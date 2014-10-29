@@ -1,6 +1,13 @@
 fpaste
 ======
 
+**This code is now no longer maintained.** Please use
+[this version of fpaste.el](http://git.sergiodj.net/?p=fpaste-el.git)
+instead. It provides almost everything that this code does, but does
+it without requiring the `fpaste` program being available.
+
+---------------------------------------------------------------------
+
 A program to upload selections to the fedora pastebin. Needs the
 `fpaste` command line program to work.
 
